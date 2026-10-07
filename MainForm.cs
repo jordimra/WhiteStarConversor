@@ -14,6 +14,7 @@ namespace WhiteStarConversor
         private Button btnBrowseOutput = null!;
         private Button btnExecute = null!;
         private TextBox txtLog = null!;
+        private CheckBox chkSameDirectory = null!;
 
         public MainForm()
         {
@@ -32,7 +33,7 @@ namespace WhiteStarConversor
             {
                 Dock = DockStyle.Fill,
                 ColumnCount = 3,
-                RowCount = 5,
+                RowCount = 6,
                 Padding = new Padding(15)
             };
 
@@ -42,6 +43,7 @@ namespace WhiteStarConversor
 
             mainLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F)); // Fichero entrada
             mainLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F)); // Carpeta salida
+            mainLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 30F)); // Checkbox mismo dir
             mainLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F)); // Formato
             mainLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F)); // Botón procesar
             mainLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F)); // Log
@@ -66,7 +68,18 @@ namespace WhiteStarConversor
             mainLayout.Controls.Add(txtOutputDir, 1, 1);
             mainLayout.Controls.Add(btnBrowseOutput, 2, 1);
 
-            // Fila 2: Formato
+            // Fila 2: Checkbox Mismo directorio
+            chkSameDirectory = new CheckBox
+            {
+                Text = "Mismo directorio que el de entrada",
+                Dock = DockStyle.Fill,
+                Checked = false
+            };
+            chkSameDirectory.CheckedChanged += ChkSameDirectory_CheckedChanged;
+            mainLayout.Controls.Add(chkSameDirectory, 1, 2);
+            mainLayout.SetColumnSpan(chkSameDirectory, 2);
+
+            // Fila 3: Formato
             Label lblFormat = new Label { Text = "Formato Salida:", Anchor = AnchorStyles.Left | AnchorStyles.Right, AutoSize = true };
             cbFormat = new ComboBox { Dock = DockStyle.Fill, DropDownStyle = ComboBoxStyle.DropDownList };
             cbFormat.Items.Add("Todos");
@@ -76,10 +89,10 @@ namespace WhiteStarConversor
             }
             cbFormat.SelectedIndex = 0;
 
-            mainLayout.Controls.Add(lblFormat, 0, 2);
-            mainLayout.Controls.Add(cbFormat, 1, 2);
+            mainLayout.Controls.Add(lblFormat, 0, 3);
+            mainLayout.Controls.Add(cbFormat, 1, 3);
 
-            // Fila 3: Botón lanzar
+            // Fila 4: Botón lanzar
             btnExecute = new Button 
             { 
                 Text = "Iniciar Conversión", 
@@ -88,10 +101,10 @@ namespace WhiteStarConversor
                 Font = new Font(this.Font, FontStyle.Bold) 
             };
             btnExecute.Click += BtnExecute_Click;
-            mainLayout.Controls.Add(btnExecute, 0, 3);
+            mainLayout.Controls.Add(btnExecute, 0, 4);
             mainLayout.SetColumnSpan(btnExecute, 3);
 
-            // Fila 4: Log de salida
+            // Fila 5: Log de salida
             txtLog = new TextBox
             {
                 Multiline = true,
@@ -100,7 +113,7 @@ namespace WhiteStarConversor
                 Dock = DockStyle.Fill,
                 Font = new Font("Consolas", 9F)
             };
-            mainLayout.Controls.Add(txtLog, 0, 4);
+            mainLayout.Controls.Add(txtLog, 0, 5);
             mainLayout.SetColumnSpan(txtLog, 3);
 
             this.Controls.Add(mainLayout);
@@ -114,8 +127,8 @@ namespace WhiteStarConversor
             {
                 txtInputFile.Text = ofd.FileName;
                 
-                // Si la carpeta de salida está vacía, poner la misma por defecto
-                if (string.IsNullOrWhiteSpace(txtOutputDir.Text))
+                // Si la carpeta de salida está vacía o está marcada la opción de "mismo directorio", poner la misma por defecto
+                if (string.IsNullOrWhiteSpace(txtOutputDir.Text) || chkSameDirectory.Checked)
                 {
                     txtOutputDir.Text = Path.GetDirectoryName(ofd.FileName) ?? string.Empty;
                 }
@@ -128,6 +141,18 @@ namespace WhiteStarConversor
             if (fbd.ShowDialog() == DialogResult.OK)
             {
                 txtOutputDir.Text = fbd.SelectedPath;
+            }
+        }
+
+        private void ChkSameDirectory_CheckedChanged(object? sender, EventArgs e)
+        {
+            bool isChecked = chkSameDirectory.Checked;
+            txtOutputDir.Enabled = !isChecked;
+            btnBrowseOutput.Enabled = !isChecked;
+
+            if (isChecked && !string.IsNullOrWhiteSpace(txtInputFile.Text))
+            {
+                txtOutputDir.Text = Path.GetDirectoryName(txtInputFile.Text) ?? string.Empty;
             }
         }
 
