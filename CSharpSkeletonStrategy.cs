@@ -14,7 +14,8 @@ namespace WhiteStarConversor
 
         public void Execute(UmlParser parser, string inputFilePath, string? targetPath)
         {
-            string outDir = targetPath ?? Path.Combine(Path.GetDirectoryName(inputFilePath) ?? "", Path.GetFileNameWithoutExtension(inputFilePath) + DefaultExtension);
+            string baseDir = targetPath ?? Path.GetDirectoryName(inputFilePath) ?? "";
+            string outDir = Path.Combine(baseDir, Path.GetFileNameWithoutExtension(inputFilePath) + DefaultExtension);
             
             if (!Directory.Exists(outDir))
             {

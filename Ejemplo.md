@@ -1,6 +1,6 @@
 # Documentación Técnica del Modelo: Ejemplo
 
-Generado el 17/07/2026 a la57 19:58:57.
+Generado el 17/07/2026 a la39 20:09:39.
 
 ## 1. Índice de Clases e Interfaces
 
