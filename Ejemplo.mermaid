@@ -1,0 +1,46 @@
+classDiagram
+    class ClasePadre {
+    }
+    class ClaseHija {
+    }
+    class Interfaz {
+        <<interface>>
+    }
+    class ClaseAbstracta {
+        <<abstract>>
+        +CampoPublico
+        -CampoPrivado
+        #CampoProtegido
+        ~CampoPaquete
+        +MetodoPublico(String, Integer) int
+        -MetodoPrivado(Double, Float) double
+        #MetodoProtegido(Boolean) boolean
+        ~MetodoPaquete() void
+    }
+    class ObjetoConcreto {
+    }
+    class ClaseA {
+    }
+    class ClaseB {
+    }
+    class ClaseAsociacion {
+    }
+
+    %% Herencia
+    ClasePadre <|-- ClaseHija : Herencia
+
+    %% Realización
+    ClaseHija <|.. ObjetoConcreto : Realizacion
+
+    %% Asociaciones, Agregaciones y Composiciones
+    ClasePadre --> Interfaz : AsociacionDirecta
+    ClaseAbstracta o-- ClaseA : Agregacion
+    ClaseA *-- ClaseB : Composicion
+
+    %% Dependencia
+    ClaseHija ..> ClaseAbstracta : Dependencia
+
+    %% Clases de Asociación
+    ClaseHija -- ClaseAsociacion
+    Interfaz -- ClaseAsociacion
+

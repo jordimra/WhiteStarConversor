@@ -1,0 +1,51 @@
+@startuml
+
+class ClasePadre
+
+class ClaseHija
+
+interface Interfaz
+
+abstract class ClaseAbstracta {
+  +CampoPublico
+  -CampoPrivado
+  #CampoProtegido
+  ~CampoPaquete
+
+  +MetodoPublico(String, Integer) : int
+  -MetodoPrivado(Double, Float) : double
+  #MetodoProtegido(Boolean) : boolean
+  ~MetodoPaquete() : void
+}
+
+class ObjetoConcreto
+
+class ClaseA
+
+class ClaseB
+
+class ClaseAsociacion
+
+' Herencia
+ClasePadre <|-- ClaseHija : Herencia
+
+' Realización
+ClaseHija <|.. ObjetoConcreto : Realizacion
+
+' Asociación directa
+ClasePadre --> Interfaz : AsociacionDirecta
+ClaseHija -- Interfaz : Asociacion
+
+' Agregación
+ClaseAbstracta o-- ClaseA : Agregacion
+
+' Composición
+ClaseA *-- ClaseB : Composicion
+
+' Dependencia
+ClaseHija ..> ClaseAbstracta : Dependencia
+
+' Clase de Asociación
+(ClaseHija, Interfaz) .. ClaseAsociacion
+
+@enduml
