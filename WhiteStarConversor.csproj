@@ -8,9 +8,9 @@
      <UseWindowsForms>true</UseWindowsForms>
    </PropertyGroup>
  
-   <ItemGroup>
-     <Compile Remove="Ejemplo_csharp\**" />
-     <None Include="Ejemplo_csharp\**" />
-   </ItemGroup>
+    <ItemGroup>
+      <Compile Remove="Ejemplo\**" />
+      <None Include="Ejemplo\**" />
+    </ItemGroup>
  
  </Project>
